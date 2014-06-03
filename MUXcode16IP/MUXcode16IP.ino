@@ -25,7 +25,7 @@ byte muxValues[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,};
 void setup()
 {
   Serial.begin(9600);
-  DDRD =  B11111111;  // bitwise OR. this is safer as it sets pins 2 to 7 as outputs
+  DDRD =  DDRD | B11110000;  // bitwise OR. this is safer as it sets pins 2 to 7 as outputs
 	                  // without changing the value of pins 0 & 1, which are RX & TX  // set PORTD (digital 7~0) to outputs
 }
  
@@ -57,6 +57,7 @@ void loop()
   {
     setPin(i); // choose an input pin on the 74HC4067
     muxValues[i]=analogRead(0); // read the vlaue on that pin and store in array
+    //delay(300);
   }
  
   // display captured data
