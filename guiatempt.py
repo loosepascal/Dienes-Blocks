@@ -20,4 +20,4 @@ window.mainloop()
 ##
 ##def prototype_window(self): #this is a method (note we call it with dot notation but need not include the self arguement - python includes for us
 ##    self.newWindow = tk.Toplevel(self.master)#Toplevel widgets work as windows that are directly managed by the window manager.
-##    self.app = Prototype(self.newWindow)
+##    self.app =    Prototype(self.newWindow)
