@@ -8,7 +8,10 @@ int S2 = 5;
 int S3 = 4;
 
 int muxValues[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+int muxThresholds[] = {310,250,400,370,340,380,360,310,295,430};
 
+
+  
 void setup()
 {
  Serial.begin(9600);
@@ -49,7 +52,8 @@ int c_bin[]={LOW,LOW,LOW,LOW,HIGH,HIGH,HIGH,HIGH,LOW,LOW,LOW,LOW,HIGH,HIGH,HIGH,
 int b_bin[]={LOW,LOW,HIGH,HIGH,LOW,LOW,HIGH,HIGH,LOW,LOW,HIGH,HIGH,LOW,LOW,HIGH,HIGH};
 int a_bin[]={LOW,HIGH,LOW,HIGH,LOW,HIGH,LOW,HIGH,LOW,HIGH,LOW,HIGH,LOW,HIGH,LOW,HIGH};
 
-int entrada=0;
+int i=0;
+int a=0;
 int a_val=0;
 int b_val=0;
 int c_val=0;
@@ -58,51 +62,53 @@ int d_val=0;
 void loop()
 {
   
-  for(entrada=0;entrada<=15;entrada++) {
+  for(i=0;i<=15;i++) {
 
     //select mux input
-    a_val=a_bin[entrada];
-    b_val=b_bin[entrada];
-    c_val=c_bin[entrada];
-    d_val=d_bin[entrada];
+    a_val=a_bin[i];
+    b_val=b_bin[i];
+    c_val=c_bin[i];
+    d_val=d_bin[i];
 
     digitalWrite(S0,a_val);
     digitalWrite(S1,b_val);
     digitalWrite(S2,c_val);
     digitalWrite(S3,d_val);
   
-  
-//  for (int i = 0; i < 16; i++)
-  //{ digitalWrite(S0, LOW); digitalWrite(S1, LOW);digitalWrite(S2, LOW);  digitalWrite(S3, LOW);  
-    muxValues[entrada] = analogRead(0);
+ 
+    muxValues[i] = analogRead(0);
     
   }
-  displayData();
- // delay(250);
-  
-  int a=0;
-  if(muxValues[0] > 420) a++;
-  if(muxValues[1] > 300) a++;
-  if(muxValues[2] > 450) a++;
-  if(muxValues[3] > 420) a++;
-  if(muxValues[4] > 400) a++;
-  if(muxValues[5] > 450) a++;
-  if(muxValues[6] > 400) a++;
-  if(muxValues[7] > 370) a++;
-  if(muxValues[8] > 300) a++;
-  if(muxValues[9] > 445) a++;
- 
-   Serial.print(a);
-    Serial.println(" Tens");
-  lcd.setCursor(0, 0); lcd.print("0"); lcd.setCursor(1, 0); lcd.print(" Units");
 
-  lcd.setCursor(0, 1); lcd.print(a); lcd.setCursor(1, 1); lcd.print(" Tens");  
- 
-  lcd.setCursor(0, 2); lcd.print("0"); lcd.setCursor(1, 2);lcd.print(" Hundreds");  
   
-  lcd.setCursor(0, 3); lcd.print("0"); lcd.setCursor(1, 3);lcd.print(" Thousands"); 
+  a=0;
+  if(muxValues[0] > muxThresholds[0]) a++;
+  if(muxValues[1] > muxThresholds[1]) a++;
+  if(muxValues[2] > muxThresholds[2]) a++;
+  if(muxValues[3] > muxThresholds[3]) a++;
+  if(muxValues[4] > muxThresholds[4]) a++;
+  if(muxValues[5] > muxThresholds[5]) a++;
+  if(muxValues[6] > muxThresholds[6]) a++;
+  if(muxValues[7] > muxThresholds[7]) a++;
+  if(muxValues[8] > muxThresholds[8]) a++;
+  if(muxValues[9] > muxThresholds[9]) a++;
+ 
+  lcd.clear(); 
+  lcd.setCursor(0, 0); lcd.print("0"); lcd.setCursor(2, 0); lcd.print(" Units");
+
+  lcd.setCursor(0, 1); lcd.print(a); lcd.setCursor(2, 1); lcd.print(" Tens");  
+ 
+  lcd.setCursor(0, 2); lcd.print("0"); lcd.setCursor(2, 2);lcd.print(" Hundreds");  
+  
+  lcd.setCursor(0, 3); lcd.print("0"); lcd.setCursor(2, 3);lcd.print(" Thousands"); 
     
-   
+    Serial.print(" "); 
+    Serial.print("0"); Serial.print(" "); 
+    Serial.print(a); Serial.print(" "); 
+    Serial.print("0"); Serial.print(" "); 
+    Serial.print("0"); 
+    
+    delay(1000);
   
 
   
