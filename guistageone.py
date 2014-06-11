@@ -11,8 +11,11 @@
 import Tkinter
 from Tkinter import *
 from Tkinter import PhotoImage
+<<<<<<< HEAD
 
 from Tkinter import PhotoImage
+=======
+>>>>>>> origin/master
 
 def main():
 ##    FrameCreator()
@@ -35,8 +38,11 @@ class HomeScreen(Frame):
     def __init__(self, master):
         Frame.__init__(self,master)
 <<<<<<< HEAD
+<<<<<<< HEAD
 
        # self.create_buttons()
+=======
+>>>>>>> origin/master
 =======
 >>>>>>> origin/master
         self.sparx_head()
@@ -44,6 +50,7 @@ class HomeScreen(Frame):
 
     def sparx_head(self):
         self.grid()
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 ##        gif1 = PhotoImage(file = 'Image.gif')
@@ -85,6 +92,13 @@ class HomeScreen(Frame):
         sparx_header.grid(column=0, row=0, sticky='NSEW', columnspan=3)
         self.grid_columnconfigure(0, weight=1)
 >>>>>>> origin/master
+=======
+        photo = PhotoImage(file="logosmall.gif")
+        sparx_header = Label(self, image=photo)
+        sparx_header.image = photo # keep a reference!
+        sparx_header.grid(column=0, row=0, sticky='NSEW', columnspan=3)
+        self.grid_columnconfigure(0, weight=1)
+>>>>>>> origin/master
 
     def create_buttons(self):
         #frame = Tkinter.Frame()
@@ -94,7 +108,11 @@ class HomeScreen(Frame):
         teacher_button = Tkinter.Button(frame, text="Teacher")
 ##        teacher_button.place(y=90, height=20)
 <<<<<<< HEAD
+<<<<<<< HEAD
         teacher_button.grid(column=0,columnspan=2, rowspan=2, padx=5, pady=5, row=10, sticky=E+W)
+=======
+        teacher_button.grid(column=0, row=1, sticky='EW')
+>>>>>>> origin/master
 =======
         teacher_button.grid(column=0, row=1, sticky='EW')
 >>>>>>> origin/master
@@ -103,7 +121,11 @@ class HomeScreen(Frame):
         student_button = Tkinter.Button(self, text="Student")
 ##        student_button.place(y=110, height=20)
 <<<<<<< HEAD
+<<<<<<< HEAD
         student_button.grid(column=3, row=10, sticky='E+W')
+=======
+        student_button.grid(column=2, row=1, sticky='EW')
+>>>>>>> origin/master
 =======
         student_button.grid(column=2, row=1, sticky='EW')
 >>>>>>> origin/master
@@ -112,7 +134,11 @@ class HomeScreen(Frame):
         prototype_button = Tkinter.Button(self, text="Prototype", command=self.OnButtonClick)
 ##        prototype_button.place(y=130, height=20)
 <<<<<<< HEAD
+<<<<<<< HEAD
         prototype_button.grid(column=2, row=10, sticky='E+W')
+=======
+        prototype_button.grid(column=1, row=1, sticky='EW')
+>>>>>>> origin/master
 =======
         prototype_button.grid(column=1, row=1, sticky='EW')
 >>>>>>> origin/master
