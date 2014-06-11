@@ -68,17 +68,21 @@ class Prototype(Frame):
     def __init__(self,master):
         Frame.__init__(self,master)
         self.createLayout()
-##        self.bluetoothRead()
+##        self.bluetoothRead()nb
 
     def createLayout(self):
-        self.grid()
-        #add the home button
-        home_button = Tkinter.Button(self, text="Home")
-        home_button.grid(row=0, column=0, sticky='EW')
+
+##        self.new_toplevel=Tkinter.Toplevel(self.top, takefocus=True)
+##        self.new_toplevel.geometry("300x300")
+##        self.new_toplevel.title("Test Application")
+##        self.grid()
+##        #add the home button
+##        home_button = Tkinter.Button(self, text="Home")
+##        home_button.grid(row=0, column=0, sticky='EW')
 
 ##    def bluetoothRead(self):
 
-##    def displayValue(self):
-
-if __name__ == "__main__":
-    main()
+####    def displayValue(self):
+##
+##if __name__ == "__main__":
+##    main()
