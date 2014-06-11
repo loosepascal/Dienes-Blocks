@@ -1,0 +1,32 @@
+input I0 = 343
+input I1 = 286
+input I2 = 441
+input I3 = 408
+input I4 = 365
+input I5 = 415
+input I6 = 390
+input I7 = 337
+input I8 = 326
+input I9 = 464
+
+input I0 = 298
+input I1 = 248
+input I2 = 403
+input I3 = 354
+input I4 = 321
+input I5 = 365
+input I6 = 345
+input I7 = 299
+input I8 = 295
+input I9 = 427
+
+45
+38
+38
+54
+44
+50
+45
+38
+31
+37
