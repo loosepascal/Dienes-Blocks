@@ -55,6 +55,8 @@ class HomeScreen(Frame):
         sparx_header.image = photo # keep a reference!
         sparx_header.grid(column=0, row=0, sticky='NSEW', columnspan=3)
         self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0,weight=1)
+##        self.resizable(True, True)
 
     def create_buttons(self):
         self.grid()
@@ -63,16 +65,19 @@ class HomeScreen(Frame):
         teacher_button = Tkinter.Button(self, text="Teacher")
 ##        teacher_button.place(y=90, height=20)
         teacher_button.grid(column=0, row=1, sticky='EW')
+##        self.resizable(True, True)
 ##        teacher_button.pack()
         # student button
         student_button = Tkinter.Button(self, text="Student")
 ##        student_button.place(y=110, height=20)
         student_button.grid(column=2, row=1, sticky='EW')
+##        self.resizable(True, True)
 ##        student_button.pack()
         # prototype button
         prototype_button = Tkinter.Button(self, text="Prototype", command=self.OnButtonClick)
 ##        prototype_button.place(y=130, height=20)
         prototype_button.grid(column=1, row=1, sticky='EW')
+##        self.resizable(True, True)
 ##        prototype_button.pack()
 
     def OnButtonClick(self):
@@ -90,7 +95,7 @@ class Prototype(Frame):
 
     def createLayout(self):
         self.grid()
-        global home_button
+        global home_button, thousands, thousands_label, hundreds, hundreds_label, tens, tens_label, units, units_label
 
         #add the home button
         home_button = Tkinter.Button(self, text="Home", command=self.HomeButtonClick)
@@ -124,10 +129,16 @@ class Prototype(Frame):
         units_label.grid(column=3, row=3)
 
 
-
-
     def HomeButtonClick(self):
         home_button.grid_forget()
+        thousands.grid_forget()
+        hundreds.grid_forget()
+        tens.grid_forget()
+        units.grid_forget()
+        thousands_label.grid_forget()
+        hundreds_label.grid_forget()
+        tens_label.grid_forget()
+        units_label.grid_forget()
         app = HomeScreen(self)
 
 ##    def bluetoothRead(self):
