@@ -87,15 +87,19 @@ void loop()
   
   lcd.setCursor(0, 3); lcd.print("0"); lcd.setCursor(2, 3);lcd.print(" Thousands"); 
     
-    //Serial.print(" "); 
+    Serial.print(" "); 
     Serial.print("0"); Serial.print(" "); 
     Serial.print(a); Serial.print(" "); 
     Serial.print("0"); Serial.print(" "); 
-    Serial.print("0"); 
+    Serial.println("0"); 
     
-    delay(1000);
-  displayData();
-
+    
+  //displayData();
+  while((Serial.available() >0)){
+    Serial.println(Serial.read());
+  }
+  Serial.println("-------------------------------------------------------------------");
+delay(1000);
   
   
   //compare each input to threshold, if > increment counter  
