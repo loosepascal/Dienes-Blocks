@@ -1,5 +1,5 @@
 #-------------------------------------------------------------------------------
-# Name:        Bluetooth Test
+# Name:        Bluetooth T->C
 # Purpose:
 #
 # Author:      Christos Karpis
@@ -43,19 +43,32 @@ client_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 client_socket.connect(("00:12:02:28:73:47", 1)) #client connects to the server on port 1
 print "connected to server"
 
+
+#send data
+#start timer1 and timer2
+#wait for confirmation
+#if confirmation within timeout1, stop timer1 and wait for data
+#if no confirmation within timeout1, resend data
+#if no confirmation within timeout2, inform teacher
+
 try:
      while True:
          try:
-             data = client_socket.recv(65536)
+             client_socket.send("Q124")
+
          except bluetooth.BluetoothError, b:
              print "Bluetooth Error: ", b
          else:
-            if data != " ":
-                print "received [%s]" % data
-                datalist = data.split(' ')
-                print datalist
-                client_socket.send("Q124")
-                time.sleep(5)
+
+
+
+            if data != "67": # C in ASCII
+                print "data received by slave"
+##                datalist = data.split(' ')
+##                print datalist
+##
+##                time.sleep(5)
+##                  data = client_socket.recv(65536)
 ##                Thousands = datalist[0]
 ##                Hundreds = datalist[1]
 ##                Tens = datalist[2]
