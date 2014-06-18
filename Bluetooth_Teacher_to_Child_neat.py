@@ -8,6 +8,20 @@
 # Copyright:   (c) Christos Karpis 2014
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
+#search for bluetooth devices
+#(---------multiple modules?--------------)
+#make connection with module
+#//START
+#    send question to child
+#   //wait for confirmation, start timeout1 to limit time for confimation to come back,
+#  //if timeout1 >t1  and no confirmation, resend answer
+#  # //if timeout1 >t2 without confirmation, display warning on adult's screen(Board not receiving
+#//if conf received,
+# start checking if answer arrived, start timeout2
+#      //answer not received and timeout2>t - tell teacher child has not responded
+#      //Answer received-> send conf
+#//go to START
+
 import bluetooth
 import time
 print "performing inquiry.."
@@ -18,6 +32,8 @@ answer_timeout = 5 #make very large to allow child to submit an answer
 C = 0
 A = 0
 escape = 0
+question = 567
+Question_String = 'Q'
 
 target_address = None
 target_name = "jyl2"
@@ -33,25 +49,12 @@ client_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 client_socket.connect(("00:12:02:28:73:47", 1)) #client connects to the server on port 1
 print "connected to server"
 
-#search for bluetooth devices
-#(---------multiple modules?--------------)
-#make connection with module
-#//START
-#    send question to child
-#   //wait for confirmation, start timeout1 to limit time for confimation to come back,
-#  //if timeout1 >t1  and no confirmation, resend answer
-#  # //if timeout1 >t2 without confirmation, display warning on adult's screen(Board not receiving
-#//if conf received,
-# start checking if answer arrived, start timeout2
-#      //answer not received and timeout2>t - tell teacher child has not responded
-#      //Answer received-> send conf
-#//go to START
-
-
 try:
      while True:
          try:
-             client_socket.send("Q0234")
+             client_socket.send("Q")
+             client_socket.send(str(question))
+             print str(question)
              print "question sent"
              #time.sleep(5)
              start = time.time()
