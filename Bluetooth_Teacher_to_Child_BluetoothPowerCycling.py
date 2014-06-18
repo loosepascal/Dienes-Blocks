@@ -14,12 +14,13 @@ print "performing inquiry.."
 
 confirmation_timeout = 2
 resend_timeout = 5
-answer_timeout = 5 #make very large to allow child to submit an answer
+answer_timeout = 20 #make very large to allow child to submit an answer
 C = 0
 A = 0
 escape = 0
+reconnected = 0
 
-target_address = None
+target_address = "00:12:02:28:73:47"
 target_name = "jyl2"
 port = 1
 nearby_devices = bluetooth.discover_devices(lookup_names=True)
@@ -82,9 +83,32 @@ try:
                 escape = 0
                 break
 
+             print "Closing socket after receiving confirmation...\n"
+             client_socket.close()
+             print "done."
+
+
          except bluetooth.BluetoothError, b:
              print "Bluetooth Error: ", b
          else:
+            time.sleep(10)
+            while (reconnected == 0):
+                start = time.time()
+                nearby_devices2 = bluetooth.discover_devices( flush_cache=False, lookup_names=False  )  #discoverdevcies() scans for about 10 seconds
+                #if lookup_names is False, returns a list of bluetooth addresses.
+                #if lookup_names is True, returns a list of (address, name) tuples
+                print "found %d devices" % len(nearby_devices2)
+                #for name, addr in nearby_devices2:
+                 #   print " %s - %s" % (addr,name)
+                for address in nearby_devices2:
+                    if target_address == address:#target_name == bluetooth.lookup_name(address):
+                        print "found jyl2"
+                        reconnected = 1
+                        client_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+                        client_socket.connect(("00:12:02:28:73:47", 1)) #client connects to the server on port 1
+                        print "reconnected to server"
+
+            print (time.time() - start)
             start = time.time()
 
             while (A == 0):
@@ -107,6 +131,7 @@ try:
             time.sleep(1)
             C=0
             A=0
+            reconnected = 0
 
 
 except KeyboardInterrupt:
