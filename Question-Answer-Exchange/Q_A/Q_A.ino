@@ -37,10 +37,11 @@ int Hundreds = 1;
 int Tens = 2;
 int Units = 3;
 
+
 void setup()
 {
   Serial.begin(9600);
-  pinMode(SubmitButton, OUTPUT);
+  pinMode(SubmitButton, INPUT);
   pinMode(Thousands, INPUT);
   pinMode(Hundreds, INPUT);
   pinMode(Tens, INPUT);
@@ -53,7 +54,7 @@ void setup()
 void loop(void)
 {
   
-    while((Serial.available() > 0)  || (Q = 0)){ //if there Is data OR we have not yet read any data from a Question packet
+    while((Serial.available() > 0)  || (Q == 0)){ //if there Is data OR we have not yet read any data from a Question packet
          if(Serial.available() > 0){
            if(Serial.read() == 81) Q = 1;
          }
@@ -101,7 +102,7 @@ void loop(void)
      //wait for confirmation, start timeout2 to limit time for confimation to come back, 
     //if timeout2 >t1  and no confirmation, resend answer
     start = millis();
-    while((Serial.available() > 0)  || (C = 0)){ //if there Is data OR we have not yet read any data from a Question packet
+    while((Serial.available() > 0)  || (C == 0)){ //if there Is data OR we have not yet read any data from a Question packet
        if(Serial.available() > 0){
          if(Serial.read() == 67) C = 1;
         }

@@ -15,8 +15,10 @@ print "performing inquiry.."
 
 confirmation_timeout = 1
 resend_timeout = 5
-answer_timeout = 10
+answer_timeout = 3
 C = 0
+A = 0
+escape = 0
 
 
 datalist = []
@@ -67,37 +69,64 @@ print "connected to server"
 try:
      while True:
          try:
-             client_socket.send("Q124")
+             client_socket.send("Q1234")
+##             client_socket.send("1")
+##             client_socket.send("2")
+##             client_socket.send("3")
+             #time.sleep(5)
              start = time.time()
              while (C == 0) : #if there Is data OR we have not yet read any data from a Question packet #(len(client_socket.recv(65536)) > 0)  ||
                 data  = client_socket.recv(65536)
-                if(data == 67) :
+                print data
+                if(data == 'C') :
                     C = 1
+
                 if((time.time() - start)> confirmation_timeout):
                     client_socket.send("Q124")
+                    print "message re-sent"
 
                    #count number of resends (if not using timeout3)
                    #if timeout2 >t2/number of resends exceeded without confirmation, display warning on child's screen
                 if((time.time() - start)> resend_timeout):
-                         while(1):
+                         #while(1):
                             print "!!!!!!!!!!!!!!!BOARD NOT RECEIVING! (resend_timeout) !!!!!!!!!!!!!!!!!" #/call function to display warning on screen and halt program
+                            escape = 1
+                            break
+##                            print "\nClosing socket...\n",
+##                            client_socket.close()
+##                            print "done."
+             if(escape == 1):
+                escape = 0
+                break
 
          except bluetooth.BluetoothError, b:
              print "Bluetooth Error: ", b
          else:
             start = time.time()
+            data  = client_socket.recv(65536)
             while (A == 0):
-                 data  = client_socket.recv(65536)
-                 if(data == 65):
+                 datalist = data.split(' ')
+                 print datalist
+                 if(datalist[0] == 'A'):
                     A = 1
                  if((time.time() - start)> answer_timeout):
-                    while(1):
+                    #while(1):
                         print "!!!!!!!!!!!!!!!NOT RECEIVING ANSWER! (answer_timeout) !!!!!!!!!!!!!!!!!" #/call function to display warning on screen and halt program
+                        escape = 1
+                        break
+            if(escape == 1):
+                escape = 0
+                break
 
-                 for i in range(0,3):
-                    datalist[i] = client_socket.recv(65536)
-                 print datalist
-                 client_socket.send("C")
+##            for num in range(0, 4):#0 to 3
+##                data = client_socket.recv(65536)
+##                datalist.append(data)
+            print datalist
+            print "%d" % len(datalist)
+            client_socket.send("C")
+            C=0
+            time.sleep(5)
+
 
 except KeyboardInterrupt:
      print "Closing socket...\n",
@@ -105,7 +134,9 @@ except KeyboardInterrupt:
      print "done."
 
 
-
+print "Closing socket...\n",
+client_socket.close()
+print "done."
 #read data (4 reads) and send confirmation
 
 

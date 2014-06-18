@@ -54,8 +54,8 @@ try:
                 print "received [%s]" % data
                 datalist = data.split(' ')
                 print datalist
-                client_socket.send("Q124")
-                time.sleep(5)
+                #client_socket.send("Q124")
+                #time.sleep(5)
 ##                Thousands = datalist[0]
 ##                Hundreds = datalist[1]
 ##                Tens = datalist[2]

@@ -79,11 +79,11 @@ try:
              start = time.time()
              #print start
              while (C == 0) : #if there Is data OR we have not yet read any data from a Question packet #(len(client_socket.recv(65536)) > 0)  ||
-                print "loop started"
+                print "confirmation loop started"
                 data  = client_socket.recv(1024) #waits until there is data to be received
                 if len(data) != 0:
                     print "received [%s]" % data
-                print "data printed\n"
+                print "confirmation data printed\n"
 
                 if(data == 'C') :
                     C = 1
@@ -113,11 +113,16 @@ try:
             start = time.time()
 
             while (A == 0):
-                answer_data  = client_socket.recv(1024)
+                answer_confirmation  = client_socket.recv(1024)
+                print answer_confirmation
 
-                datalist = answer_data.split(' ')
-                print datalist
+
+                #datalist = answer_data.split(',')
+                #print datalist
                 if(datalist[0] == 'A'):
+                    answer_data = client_socket.recv(1024)
+                    print "answer  data = "
+                    print answer_data
                     A = 1
                 if((time.time() - start)> answer_timeout):
                     #while(1):
@@ -131,7 +136,7 @@ try:
 ##            for num in range(0, 4):#0 to 3
 ##                data = client_socket.recv(65536)
 ##                datalist.append(data)
-            print datalist
+##            print datalist
             print "%d" % len(datalist)
             start = time.time()
             #while((time.time() - start) < 1):
@@ -141,7 +146,7 @@ try:
             C=0
             A=0
             datalist = []
-            print "happy"
+##            print "happy"
 
 
 
