@@ -28,14 +28,14 @@ print "performing inquiry.."
 
 confirmation_timeout = 2
 resend_timeout = 5
-answer_timeout = 30 #make very large to allow child to submit an answer
+answer_timeout = 300 #make very large to allow child to submit an answer
 C = 0
 A = 0
 escape = 0
 question = 567
 Question_String = 'Q'
 
-target_address = None
+target_address = "00:12:02:28:73:47"
 target_name = "jyl2"
 port = 1
 nearby_devices = bluetooth.discover_devices(lookup_names=True)
@@ -46,7 +46,7 @@ for name, addr in nearby_devices:
 
 #bluetooth address of the bluetooth module is 00:12:02:28:73:47
 client_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-client_socket.connect(("00:12:02:28:73:47", 1)) #client connects to the server on port 1
+client_socket.connect((target_address, port)) #client connects to the server on port 1
 print "connected to server"
 
 try:
@@ -56,9 +56,9 @@ try:
              client_socket.send(str(question))
              print str(question)
              print "question sent"
-             #time.sleep(5)
+
              start = time.time()
-             #print start
+
              while (C == 0) : #if there Is data OR we have not yet read any data from a Question packet #(len(client_socket.recv(65536)) > 0)  ||
                 print "confirmation loop started"
                 data  = client_socket.recv(1024) #waits until there is data to be received
@@ -70,7 +70,8 @@ try:
                     C = 1
 
                 if(((time.time() - start) > confirmation_timeout) and (C == 0)):
-                    client_socket.send("Q0234")
+                    client_socket.send("Q")
+                    client_socket.send(str(question))
                     print "message re-sent"
 
                    #count number of resends (if not using timeout3)
