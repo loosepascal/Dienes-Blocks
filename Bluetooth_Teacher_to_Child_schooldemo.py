@@ -8,21 +8,38 @@
 # Copyright:   (c) Christos Karpis 2014
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
+#search for bluetooth devices
+#(---------multiple modules?--------------)
+#make connection with module
+#//START
+#    send question to child
+#   //wait for confirmation, start timeout1 to limit time for confimation to come back,
+#  //if timeout1 >t1  and no confirmation, resend answer
+#  # //if timeout1 >t2 without confirmation, display warning on adult's screen(Board not receiving
+#//if conf received,
+# start checking if answer arrived, start timeout2
+#      //answer not received and timeout2>t - tell teacher child has not responded
+#      //Answer received-> send conf
+#//go to START
+
 import bluetooth
 import time
 print "performing inquiry.."
 
 confirmation_timeout = 2
 resend_timeout = 5
-answer_timeout = 20 #make very large to allow child to submit an answer
+answer_timeout = 300 #make very large to allow child to submit an answer
 C = 0
 A = 0
 escape = 0
-reconnected = 0
-question = 567
-Question_String = 'Q'
 
-target_address = "00:12:02:28:73:47"
+question = ["123", "250","473", "207","152","360","299", "101","564","658"]
+
+
+Question_String = 'Q'
+qcount = 0
+
+target_address = None
 target_name = "jyl2"
 port = 1
 nearby_devices = bluetooth.discover_devices(lookup_names=True)
@@ -40,7 +57,7 @@ try:
      while True:
          try:
              client_socket.send("Q")
-             client_socket.send(str(question))
+             client_socket.send(question[qcount])
              print str(question)
              print "question sent"
              #time.sleep(5)
@@ -73,34 +90,9 @@ try:
                 escape = 0
                 break
 
-             print "Closing socket after receiving confirmation...\n"
-             client_socket.close()
-             print "done."
-
-
          except bluetooth.BluetoothError, b:
              print "Bluetooth Error: ", b
          else:
-            time.sleep(10)
-            while (reconnected == 0):
-                start = time.time()
-                nearby_devices2 = bluetooth.discover_devices( flush_cache=False, lookup_names=False  )  #discoverdevcies() scans for about 10 seconds
-                #if lookup_names is False, returns a list of bluetooth addresses.
-                #if lookup_names is True, returns a list of (address, name) tuples
-                print "found %d devices" % len(nearby_devices2)
-                #for name, addr in nearby_devices2:
-                 #   print " %s - %s" % (addr,name)
-                for address in nearby_devices2:
-                    if target_address == address:#target_name == bluetooth.lookup_name(address):
-                        print "found jyl2"
-                        reconnected = 1
-
-
-                        client_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-                        client_socket.connect(("00:12:02:28:73:47", 1)) #client connects to the server on port 1
-                        print "reconnected to server"
-
-            print (time.time() - start)
             start = time.time()
 
             while (A == 0):
@@ -123,7 +115,9 @@ try:
             time.sleep(1)
             C=0
             A=0
-            reconnected = 0
+            qcount = qcount + 1
+            if(qcount == 10):
+                qcount = 0
 
 
 except KeyboardInterrupt:

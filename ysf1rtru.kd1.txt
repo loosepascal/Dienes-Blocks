@@ -1,0 +1,19 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   Bluetooth_Teacher_to_Child_BluetoothPowerCycling.py
+#	modified:   Bluetooth_Teacher_to_Child_neat.py
+#	new file:   Bluetooth_Teacher_to_Child_schooldemo.py
+#	deleted:    guistageone.py
+#	deleted:    logo.gif
+#	deleted:    logo.jpg
+#	deleted:    logo2.ico
+#	deleted:    logo2.jpg
+#	deleted:    logo2.png
+#	deleted:    noclassattempt.py
+#
+

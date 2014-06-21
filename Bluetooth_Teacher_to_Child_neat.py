@@ -28,7 +28,7 @@ print "performing inquiry.."
 
 confirmation_timeout = 2
 resend_timeout = 5
-answer_timeout = 5 #make very large to allow child to submit an answer
+answer_timeout = 30 #make very large to allow child to submit an answer
 C = 0
 A = 0
 escape = 0
