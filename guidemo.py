@@ -22,6 +22,7 @@ import Tkinter
 import bluetooth
 import time
 import random
+import math
 from Tkinter import *
 from Tkinter import PhotoImage
 
@@ -65,29 +66,29 @@ def handler():
     window.destroy()
 
 def generateQuestion(question_difficulty, sublevel):
-        if question_difficulty == "easy":
-            if sublevel == 1:
-                question = random.randint(1,10)
-            elif sublevel == 2:
-                question = random.randint(11,20)
-            elif sublevel == 3:
-                question = random.randint(21,100)
-        elif question_difficulty == "medium":
-            if sublevel == 1:
-                question = random.randint(101,110)
-            elif sublevel == 2:
-                question = random.randint(111,200)
-            elif sublevel == 3:
-                question = random.randint(201,999)
-        elif question_difficulty =="hard":
-            if sublevel == 1:
-                question = random.randint(1000,1100)
-            elif sublevel == 2:
-                question = random.randint(1100,1200)
-            elif sublevel == 3:
-                question = random.randint(1200,2999)
-        print question_difficulty, question
-        return question
+    if question_difficulty == "easy":
+        if sublevel == 1:
+            question = random.randint(1,10)
+        elif sublevel == 2:
+            question = random.randint(11,20)
+        elif sublevel == 3:
+            question = random.randint(21,100)
+    elif question_difficulty == "medium":
+        if sublevel == 1:
+            question = random.randint(101,110)
+        elif sublevel == 2:
+            question = random.randint(111,200)
+        elif sublevel == 3:
+            question = random.randint(201,999)
+    elif question_difficulty =="hard":
+        if sublevel == 1:
+            question = random.randint(1000,1100)
+        elif sublevel == 2:
+            question = random.randint(1100,1200)
+        elif sublevel == 3:
+            question = random.randint(1200,2999)
+    print question_difficulty, question
+    return question
 
 def bt_comm(question):
     confirmation_timeout = 2
@@ -242,12 +243,18 @@ class Prototype(Frame):
         difficulty_button = Tkinter.Button(self, text="Confirm Difficulty", command=self.OnSubmitDifficulty)
         difficulty_button.grid(row=2, column=3, columnspan=1)
 
+        self.current_question = Tkinter.StringVar()
+        self.current_question.set ("No current question answered")
+
         #add the current question answered label
-        current_question_label = Label(self, text= "Current Question Attempted: 1326", width=60, anchor=W, justify=LEFT)
+        current_question_label = Label(self, textvariable= self.current_question, width=60, anchor=W, justify=LEFT)
         current_question_label.grid(row=3, column=0, columnspan =4)
 
+        #add the feedback label and its variable
+        self.feedback = Tkinter.StringVar()
+
         #add label to say number of blocks on the board
-        answer_label = Label(self, text= "Current Answer:", width=60, anchor=W, justify=LEFT)
+        answer_label = Label(self, textvariable=self.feedback, width=60, anchor=W, justify=LEFT)
         answer_label.grid(row=4, column=0, columnspan=4)
 
         #add the four zones
@@ -268,26 +275,28 @@ class Prototype(Frame):
         self.units_data = Tkinter.StringVar()
 
         #create labels to display the data
-        thousands_label = Label(self, text="1", bg="white", fg="black", relief="raised", height=3, width=15)
+        thousands_label = Label(self, textvariable=self.thousands_data, bg="white", fg="black", relief="raised", height=3, width=15)
         thousands_label.grid(column=0, row=7)
-        hundreds_label = Label(self, text="3", bg="white", fg="black", relief="raised", height=3, width=15)
+        hundreds_label = Label(self, textvariable=self.hundreds_data, bg="white", fg="black", relief="raised", height=3, width=15)
         hundreds_label.grid(column=1, row=7)
-        tens_label = Label(self, text="2", bg="white", fg="black", relief="raised", height=3, width=15)
+        tens_label = Label(self, textvariable=self.tens_data, bg="white", fg="black", relief="raised", height=3, width=15)
         tens_label.grid(column=2, row=7)
-        units_label = Label(self, text="7", bg="white", fg="black", relief="raised", height=3, width=15)
+        units_label = Label(self, textvariable=self.units_data, bg="white", fg="black", relief="raised", height=3, width=15)
         units_label.grid(column=3, row=7)
+
+
 
         #add the home button
         home_button = Tkinter.Button(self, text="Home", command=self.HomeButtonClick)
-        home_button.grid(row=10, column=0, sticky='EW')
+        home_button.grid(row=11, column=0, sticky='EW')
 
         #add the question set button
         question_set_button = Tkinter.Button(self, text="Question Set")
-        question_set_button.grid(row=10, column=2, sticky='EW')
+        question_set_button.grid(row=11, column=2, sticky='EW')
 
         #add the question level button
         start_button = Tkinter.Button(self, text="START!", command=self.OnStartPress)
-        start_button.grid(row=10, column=3, sticky='EW')
+        start_button.grid(row=11, column=3, sticky='EW')
 
 
     def HomeButtonClick(self):
@@ -310,12 +319,27 @@ class Prototype(Frame):
     def OnStartPress(self):
         sublevel = 1
         current_question = generateQuestion(question_difficulty, sublevel)
+        self.UpdateLabel(current_question)
+##        self.current_question.set(str(current_question) +" is the current question attempted")
         attempt_number = 1
         correct = 0
         number_wrong = 0
-
+##        while True:
         answer = bt_comm(current_question)
-        if answer == current_question:
+        number = int(answer)
+        number_thousands = math.floor(number/1000)
+        self.thousands_data.set(int(number_thousands))
+        thousands_modulo = number%1000
+        number_hundreds = math.floor(thousands_modulo/100)
+        self.hundreds_data.set(int(number_hundreds))
+        hundreds_modulo = thousands_modulo%100
+        number_tens = math.floor(hundreds_modulo/10)
+        self.tens_data.set(int(number_tens))
+        tens_modulo = hundreds_modulo%10
+        number_ones = math.floor(tens_modulo)
+        self.units_data.set(int(number_ones))
+        if number == current_question:
+                self.feedback.set("The answer given is correct! :)")
                 # check whether 3 correct ones have been answered in a row
                 correct += 1
                 if attempt_number == 2:
@@ -337,11 +361,13 @@ class Prototype(Frame):
                         current_question = generateQuestion(question_difficulty, sublevel)
                     attempt_number = 1
             # if the answer is wrong once
-        elif answer != current_question and attempt_number == 1:
+        elif number != current_question and attempt_number == 1:
+                self.feedback.set("The answer given is wrong :/")
                 correct = 0
                 attempt_number = 2
             # if the answer is wrong after retrying
-        elif answer != current_question and attempt_number == 2:
+        elif number != current_question and attempt_number == 2:
+                self.feedback.set("The answer given is wrong twice in a row :(")
                 current_question = generateQuestion(question_difficulty, sublevel)
                 number_wrong += 1
                 if number_wrong == 2:
@@ -350,60 +376,8 @@ class Prototype(Frame):
                     current_question = generateQuestion(question_difficulty, sublevel)
                     number_wrong = 0
 
-
-
-    def used_to_be_main():
-        # generate the start question
-        sublevel = 1
-        current_question = generateQuestion(question_difficulty, sublevel)
-        attempt_number = 1
-        correct = 0
-        number_wrong = 0
-        while True:
-            # send the question via bluetooth
-            # receive the answer via bluetooth
-
-            # check answer
-            # if the answer is correct
-            if answer == current_question:
-                # check whether 3 correct ones have been answered in a row
-                correct += 1
-                if attempt_number == 2:
-                    correct = 0
-                # keep track of the previous question
-                previous_question = current_question
-
-                #generate a new question
-                if correct == 3: # if 3 correct ones in a row
-                    sublevel += 1 # go to the next level
-                    if sublevel > 3:
-                        sublevel = random.randint(1,3)
-                    current_question = generateQuestion(question_difficulty, sublevel)
-                    correct = 0
-                    attempt_number = 1
-                else:
-                    # ensure question is not the same as the previous one
-                    while current_question == previous_question:
-                        current_question = generateQuestion(question_difficulty, sublevel)
-                    attempt_number = 1
-            # if the answer is wrong once
-            elif answer != current_question and attempt_number == 1:
-                correct = 0
-                attempt_number = 2
-            # if the answer is wrong after retrying
-            elif answer != current_question and attempt_number == 2:
-                current_question = generateQuestion(question_difficulty, sublevel)
-                number_wrong += 1
-                if number_wrong == 2:
-                    if sublevel != 1:
-                        sublevel -= 1
-                    current_question = generateQuestion(question_difficulty, sublevel)
-                    number_wrong = 0
-
-
-##    def bluetoothRead(self):
-
-##    def displayValue(self):
+    def UpdateLabel(self, current_question):
+        self.current_question.set(str(current_question) +" is the current question attempted")
 
 
 if __name__ == "__main__":
